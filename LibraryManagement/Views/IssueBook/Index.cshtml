@@ -1,0 +1,158 @@
+﻿@model PagedList.IPagedList<LibraryManagement.Models.BooksModel>
+@using PagedList.Mvc;
+<html>
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+    @section scripts {
+
+        <script type="text/javascript">
+
+            $("body").on("click", "#Checkout", function () {
+
+                var books = new Array();
+                $("#tblBooks input[type=checkbox]:checked").each(function () {
+                    var row = $(this).closest("tr")[0];
+                    var book = {};
+                    book.ISBN = row.cells[0].innerHTML
+                    book.BookName = row.cells[1].innerHTML
+                    book.Title = row.cells[2].innerHTML
+                    book.Authors = row.cells[3].innerHTML
+                    book.Totalqty = $(this).closest("tr").find('#Quantity').val()
+
+                    books.push(book)
+                });
+
+               $.ajax({
+                    type: "POST",
+                    url: "IssueBook/Index",
+                    data: JSON.stringify(books),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response) {
+                            window.location = '@Url.Action("Checkout", "IssueBook")'
+                        }
+                        else {
+                            alert("Please select a book and enter a quantity to proceed")
+                        }
+
+                   },
+                   error: function (f) {
+                       alert("failed:" + f)
+                   }
+                });
+
+            });
+
+        </script>
+    }
+
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <table class="table" id="tblBooks">
+        <thead>
+            <tr>
+                <th>
+                    ISBN
+                </th>
+                <th>
+                    Book Name
+                </th>
+                <th>
+                    @Html.ActionLink("Title", "Index", new { sortOrder = ViewData["TitleSortParm"] })
+                </th>
+                <th>
+                    @Html.ActionLink("Authors", "Index", new { sortOrder = ViewData["AuthorsSortParm"] })
+                </th>
+                <th>
+                    Publisher
+                </th>
+                <th>
+                    Book Status
+                </th>
+                <th>
+                    Check Book
+                </th>
+                <th>
+                    Quantity
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ISBN)
+                    </td>
+                    <td>
+                        @Html.DisplayTextFor(modelItem => item.BookName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Authors)
+                    </td>
+                    <td>
+                        @Html.DisplayTextFor(modelItem => item.Publisher)
+                    </td>
+                    <td>
+                        @Html.DisplayTextFor(modelItem => item.BookStatus)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(modelItem => item.IsChecked)
+                    </td>
+
+                    <td>
+                        <input type="text" id="Quantity" name="Quantity" />
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+
+                    <input type="submit" id="Checkout" value="Checkout" class="btn btn-primary" />
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+  
+    <br />
+
+
+    <br />
+    <br />
+
+
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+
+
+</body>
+
+
+</html>
+
+

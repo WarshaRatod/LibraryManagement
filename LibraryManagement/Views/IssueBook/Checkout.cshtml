@@ -1,0 +1,99 @@
+﻿@model LibraryManagement.Models.BookIssueModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <br />
+    <br />
+    <br />
+
+
+    <table>
+        <tr>
+            <td>
+                User Name
+            </td>
+            <td></td>
+            <td>
+                <input type="text" name="UserName" id="UserName" value="@ViewBag.UserName" disabled />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email
+            </td>
+            <td></td>
+            <td>
+                <input type="text" name="Email" id="Email" value="@ViewBag.Email" disabled />
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                ISBN
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Book Name
+            </th>
+            <th>
+                BookitemId
+            </th>
+            <th>
+                BorrowedDate
+            </th>
+            <th>
+                Due Date
+            </th>
+        </tr>
+        @foreach (var itemin in Model.BookItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => itemin.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemin.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemin.BookName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemin.BookitemId)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemin.BorrowedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => itemin.DueDate)
+                </td>
+            </tr>
+
+        }
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </td>
+        </tr>
+
+    </table>
+    <div>
+        @Html.Label((string)ViewBag.ReferenceNo)
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "IssueBook")
+</div>

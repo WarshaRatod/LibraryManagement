@@ -1,0 +1,136 @@
+﻿@model PagedList.IPagedList<LibraryManagement.Models.BooksModel>
+@using PagedList.Mvc;
+<html>
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $('#BookSearch').change(function () {
+                $('#SearchString').val($(this).val());
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <p>
+    @Html.ActionLink("Create New", "AddNewBook")
+    </p>
+
+    <table>
+        @using (Html.BeginForm())
+        {
+            <tr>
+                <td>
+                    <label>Serach</label>
+                </td>
+                <td style="padding-left: 20px">
+                    @Html.DropDownList("BookSearch", new List<SelectListItem>()
+           {
+               new SelectListItem(){ Text= "All", Value = "All"},
+               new SelectListItem(){ Text= "Available", Value = "Available"},
+               new SelectListItem(){ Text= "Book taken by User", Value = "Book taken by User"},
+
+           }, "Select Book")
+
+                </td>
+
+                <td style="padding-left: 50px">
+
+                    @Html.TextBox("SearchString")
+                </td>
+
+                <td>
+                    <input type="submit" value="Search" />
+                </td>
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+
+    <table id="tblBooks" class="table" style="padding-bottom:500px">
+        <thead>
+            <tr>
+                <th>
+
+                    ISBN
+                </th>
+                <th>
+                    BookName
+                </th>
+                <th>
+
+                    @Html.ActionLink("Title", "GetAllBooks", new { sortOrder = ViewData["TitleSortParm"] })
+
+                </th>
+                <th>
+                    @Html.ActionLink("Authors", "GetAllBooks", new { sortOrder = ViewData["AuthorsSortParm"] })
+                </th>
+                <th>
+                    Publisher
+                </th>
+
+                <th>
+                    Total Quantity
+                </th>
+                <th>
+                    Book Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ISBN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Authors)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Publisher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Totalqty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookStatus)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", item) |
+                        @Html.ActionLink("Delete", "Delete", item)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("GetAllBooks",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+</body>
+</html>
+
+
