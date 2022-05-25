@@ -78,6 +78,7 @@ namespace LibraryManagement.Controllers
 
                     if (user.UserId > 0)
                     {
+                        ViewBag.ErrorMessage = "";
                         Session["Email"] = user.Email;
                         Session["user"] = user;
 
@@ -89,6 +90,10 @@ namespace LibraryManagement.Controllers
                         {
                             return RedirectToAction("GetAllBooks", "Book");
                         }
+                    }
+                    else 
+                    {
+                        ViewBag.ErrorMessage = "User doesn't exists, please register.";
                     }
                 }
                 catch (Exception ex)

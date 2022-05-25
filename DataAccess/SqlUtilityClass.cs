@@ -43,7 +43,7 @@ namespace DataAccess
                     sqlParameterCollection = cmd.Parameters;
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }
@@ -72,7 +72,7 @@ namespace DataAccess
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -94,7 +94,7 @@ namespace DataAccess
                 dr = cmd.ExecuteReader();
                
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 throw;
@@ -119,7 +119,7 @@ namespace DataAccess
                 dr = cmd.ExecuteReader();
 
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 throw;

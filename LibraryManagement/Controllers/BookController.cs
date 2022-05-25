@@ -147,7 +147,7 @@ namespace LibraryManagement.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }

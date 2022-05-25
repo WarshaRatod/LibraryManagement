@@ -41,12 +41,15 @@ namespace DataAccess
         public User Login(User user)
         {
             // return true;LoginUser   @UserId=UserId,@UserName=UseName,@Role
-
+            int userid = 0;
             try
             {
                 SqlParameter[] sqlParameters = SetupLoginParameters(user);
                 SqlParameterCollection sqlParameterCollection = SqlUtilityClass.ExecuteNonQuery("LoginUser", sqlParameters);
-                int userid = Convert.ToInt32(sqlParameterCollection["@UserId"].Value);
+                if (sqlParameterCollection["@UserId"] != null && !string.IsNullOrEmpty(sqlParameterCollection["@UserId"].Value.ToString()))
+                {
+                    userid = Convert.ToInt32(sqlParameterCollection["@UserId"].Value);
+                }
 
                 if (userid > 0)
                 {

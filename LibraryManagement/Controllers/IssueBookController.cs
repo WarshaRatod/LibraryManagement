@@ -42,7 +42,7 @@ namespace LibraryManagement.Controllers
                 }
                 Session["AllBookDetails"] = lstbookModel;
                 ViewData["CurrentSort"] = sortOrder;
-                ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "Title";
+                ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
                 ViewData["AuthorsSortParm"] = sortOrder == "Authors" ? "Authors_desc" : "Authors";
 
                 if (searchString != null)
@@ -70,14 +70,11 @@ namespace LibraryManagement.Controllers
                     case "Title_desc":
                         modelList = modelList.OrderByDescending(s => s.Title).ToList<BooksModel>();
                         break;
-                    case "Title":
-                        modelList = modelList.OrderBy(s => s.Title).ToList<BooksModel>();
-                        break;
                     case "Authors_desc":
                         modelList = modelList.OrderByDescending(s => s.Authors).ToList<BooksModel>(); ;
                         break;
                     case "Authors":
-                        modelList = modelList.OrderByDescending(s => s.Authors).ToList<BooksModel>(); ;
+                        modelList = modelList.OrderBy(s => s.Authors).ToList<BooksModel>(); ;
                         break;
                     default:  // Name ascending 
                         modelList = modelList.OrderBy(s => s.BookName).ToList<BooksModel>(); ;
@@ -122,19 +119,22 @@ namespace LibraryManagement.Controllers
                     //Get available items and filter for user entered quantity
                     BookIssue bookIssueItem = bookActivities.GetAvailbeBooksItemsByISBN(ISBNs.ToString(), ISBNQtykeyValuePairs);
 
-                    BookIssueModel bookIssueModel = new BookIssueModel();
-                    User objuser = new User();
-                    if (Session["user"] != null)
+                    if (bookIssueItem.BookItems.Count > 0)
                     {
-                        objuser = (User)Session["user"];
-                        bookIssueModel.UserId = objuser.UserId;
-                        bookIssueModel.Email = objuser.Email;
-                        bookIssueModel.Name = objuser.Name;
-                    }
-                    bookIssueModel.BookItems = bookIssueItem.BookItems;
-                    Session["UserCheckedBooks"] = bookIssueModel;
+                        BookIssueModel bookIssueModel = new BookIssueModel();
+                        User objuser = new User();
+                        if (Session["user"] != null)
+                        {
+                            objuser = (User)Session["user"];
+                            bookIssueModel.UserId = objuser.UserId;
+                            bookIssueModel.Email = objuser.Email;
+                            bookIssueModel.Name = objuser.Name;
+                        }
+                        bookIssueModel.BookItems = bookIssueItem.BookItems;
+                        Session["UserCheckedBooks"] = bookIssueModel;
 
-                    jsonresult = true;
+                        jsonresult = true;
+                    }
                 }
                 else
                 {
