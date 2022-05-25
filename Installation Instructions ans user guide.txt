@@ -1,0 +1,34 @@
+Installation Guide Library Management System
+
+1.introduction
+Library management system is designed to manage the movement of books and maintain records of the members in a library.
+The purpose of a library management system is to manage & track the daily work of the library such as issuing books, return books, 
+due calculations, etc.It helps in maintaining records. One can track any information through this system. It increases the efficiency.
+It saves human effort and time.
+
+2.software prerequisites
+.Visual studio 2019.
+.Sql server 
+.NET Framework.
+.Microsoft Windows 10/11 (32 or 64 bit).
+
+3.software installation
+
+.Download the source code from git https://github.com/WarshaRatod/LibraryManagement and
+ save it to local drive.
+.Open the LibraryManagement.sln file in your visual studio 2019.
+.Download the LibraryManagementDBBackup.bak file from the same above git URL.
+.Create the database LIBMGMT in your sql server.
+.Restore the database backup file ie LibraryManagementDBBackup.bak file into your LIBMGMT sql server database.
+.Change the Data source property of connection string and set its value with your data source.
+.Run the appli
+
+User Guide:
+
+1) This application used by Libray admin and Members.
+2) admin@gmail.com user is admin user and it's created with manual insert in Users table.
+3) Members users will be able to registered themself using email address. Email address check is not done to see if it's valid or not.
+4) Admin member can add, update or delete books. They can serach all books, only available books and books taken by users.  
+5) Members can serach all books or available books.
+6) All user would be able to sort on title and authors name.
+7) Members can borrow multiple books at the same time. 
